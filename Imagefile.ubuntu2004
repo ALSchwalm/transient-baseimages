@@ -1,0 +1,29 @@
+FROM scratch
+DISK 20gb MBR
+PARTITION 1 FORMAT xfs MOUNT /
+
+ADD ubuntu-20.04.tar.gz /
+
+RUN apt-get update
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
+       linux-image-generic grub2 init systemd \
+       iproute2 openssh-server sudo
+
+ADD dhcp.network /etc/systemd/network/dhcp.network
+
+RUN useradd -m -G sudo -s /bin/bash vagrant
+RUN echo "vagrant:vagrant" | chpasswd
+RUN mkdir /home/vagrant/.ssh/
+ADD authorized_keys /home/vagrant/.ssh/authorized_keys
+RUN chown -R vagrant /home/vagrant/.ssh/
+RUN chmod 644 /home/vagrant/.ssh/authorized_keys
+RUN passwd -d root
+
+RUN systemctl enable systemd-networkd.service
+RUN systemctl enable ssh
+
+RUN sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT=".*"/GRUB_CMDLINE_LINUX_DEFAULT="console=ttyS0"/' \
+      /etc/default/grub
+RUN echo "/dev/sda / xfs rw 0 0" >> /etc/fstab
+RUN grub-install /dev/sda
+RUN grub-mkconfig -o /boot/grub/grub.cfg
