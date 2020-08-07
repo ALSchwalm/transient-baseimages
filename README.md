@@ -9,7 +9,7 @@ on `transient` and building images, see the `transient` docs
 
 This repository contains Imagefiles that building images 'from scratch'.
 That is, they are not based on any existing image. These images are
-periodically built and uploaded to [Vagrant Cloud](https://app.vagrantup.com/),
+periodically built and uploaded to [Vagrant Cloud](https://app.vagrantup.com/boxes/search?utf8=%E2%9C%93&sort=downloads&provider=&q=transient-baseimage),
 so they can be used with `transient` easily. For example, to use the
 baseimage for Ubuntu 20.04 as a `transient` image, simply run:
 
