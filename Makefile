@@ -9,7 +9,12 @@ CENTOS_7_8_BASE=centos-7.8.2003.tar.xz
 CENTOS_7_8_IMAGEFILE=Imagefile.centos78
 CENTOS_7_8_NAME=centos-7.8.2003
 
-all: ubuntu-20.04 centos-7.8
+DEBIAN_BUSTER_URL="https://github.com/debuerreotype/docker-debian-artifacts/blob/38b06b2a8a31d805359f1ca3ef5f3203b8a536a7/stable/rootfs.tar.xz?raw=true"
+DEBIAN_BUSTER_BASE=debian-buster.tar.xz
+DEBIAN_BUSTER_IMAGEFILE=Imagefile.debianBuster
+DEBIAN_BUSTER_NAME=debian-buster
+
+all: ubuntu-20.04 centos-7.8 debian-buster
 
 build:
 	mkdir -p build
@@ -33,6 +38,16 @@ build/$(CENTOS_7_8_NAME).qcow2: build/$(CENTOS_7_8_BASE)
 
 .PHONY: centos-7.8
 centos-7.8: build/$(CENTOS_7_8_NAME).qcow2
+
+
+build/$(DEBIAN_BUSTER_BASE): | build
+	curl -L $(DEBIAN_BUSTER_URL) -o $@
+
+build/$(DEBIAN_BUSTER_NAME).qcow2: build/$(DEBIAN_BUSTER_BASE)
+	transient build -f $(DEBIAN_BUSTER_IMAGEFILE) build/ -local -name $(DEBIAN_BUSTER_NAME)
+
+.PHONY: debian-buster
+debian-buster: build/$(DEBIAN_BUSTER_NAME).qcow2
 
 
 .PHONY: clean
