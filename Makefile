@@ -1,5 +1,5 @@
 
-UBUNTU_20_04_URL="http://cdimage.ubuntu.com/ubuntu-base/releases/20.04/release/ubuntu-base-20.04-base-amd64.tar.gz"
+UBUNTU_20_04_URL="http://cdimage.ubuntu.com/ubuntu-base/releases/20.04/release/ubuntu-base-20.04.2-base-amd64.tar.gz"
 UBUNTU_20_04_BASE=ubuntu-20.04.tar.gz
 UBUNTU_20_04_IMAGEFILE=Imagefile.ubuntu2004
 UBUNTU_20_04_NAME=ubuntu-20.04
