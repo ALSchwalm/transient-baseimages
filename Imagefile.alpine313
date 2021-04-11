@@ -14,7 +14,7 @@ ADD authorized_keys /home/vagrant/.ssh/authorized_keys
 RUN chown -R vagrant /home/vagrant/.ssh/
 RUN chmod 644 /home/vagrant/.ssh/authorized_keys
 RUN passwd -d root
-RUN sed -i 's/# %wheel ALL=(ALL) NOPASSWD: ALL/%wheel ALL=(ALL) NOPASSWD: ALL/' /etc/sudoers
+RUN sed -i 's/# %wheel/%wheel/' /etc/sudoers
 
 RUN ln -s /etc/init.d/agetty /etc/init.d/agetty.ttyS0
 

@@ -18,6 +18,7 @@ ADD authorized_keys /home/vagrant/.ssh/authorized_keys
 RUN chown -R vagrant /home/vagrant/.ssh/
 RUN chmod 644 /home/vagrant/.ssh/authorized_keys
 RUN passwd -d root
+RUN sed -i 's/# %wheel/%wheel/' /etc/sudoers
 
 RUN systemctl disable network
 RUN systemctl enable systemd-networkd.service
