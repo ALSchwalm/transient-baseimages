@@ -19,11 +19,21 @@ ALPINE_3_13_BASE=alpine-3.13.tar.xz
 ALPINE_3_13_IMAGEFILE=Imagefile.alpine313
 ALPINE_3_13_NAME=alpine-3.13
 
-all: ubuntu-20.04 centos-7.8 debian-buster alpine-3.13
+PLATFORMS := ubuntu-20.04 centos-7.8 debian-buster alpine-3.13
+
+all: $(PLATFORMS)
+test: $(addprefix test-,$(PLATFORMS))
 
 build:
 	mkdir -p build
 	cp -r assets/* build/
+
+test-build/%:
+	./scripts/test_image.sh build/$*
+
+interactive-build/%:
+	./scripts/test_image.sh -i build/$*
+
 
 build/$(UBUNTU_20_04_BASE): | build
 	curl -L $(UBUNTU_20_04_URL) -o $@
@@ -31,8 +41,10 @@ build/$(UBUNTU_20_04_BASE): | build
 build/$(UBUNTU_20_04_NAME).qcow2: build/$(UBUNTU_20_04_BASE)
 	transient build -f $(UBUNTU_20_04_IMAGEFILE) build/ -local -name $(UBUNTU_20_04_NAME)
 
-.PHONY: ubuntu-20.04
+.PHONY: ubuntu-20.04 test-ubuntu-20.04 interactive-ubuntu-20.04
 ubuntu-20.04: build/$(UBUNTU_20_04_NAME).qcow2
+test-ubuntu-20.04: test-build/$(UBUNTU_20_04_NAME).qcow2
+interactive-ubuntu-20.04: interactive-build/$(UBUNTU_20_04_NAME).qcow2
 
 
 build/$(CENTOS_7_8_BASE): | build
@@ -41,8 +53,10 @@ build/$(CENTOS_7_8_BASE): | build
 build/$(CENTOS_7_8_NAME).qcow2: build/$(CENTOS_7_8_BASE)
 	transient build -f $(CENTOS_7_8_IMAGEFILE) build/ -local -name $(CENTOS_7_8_NAME)
 
-.PHONY: centos-7.8
+.PHONY: centos-7.8 test-centos-7.8 interactive-centos-7.8
 centos-7.8: build/$(CENTOS_7_8_NAME).qcow2
+test-centos-7.8: test-build/$(CENTOS_7_8_NAME).qcow2
+interactive-centos-7.8: interactive-build/$(CENTOS_7_8_NAME).qcow2
 
 
 build/$(DEBIAN_BUSTER_BASE): | build
@@ -51,8 +65,11 @@ build/$(DEBIAN_BUSTER_BASE): | build
 build/$(DEBIAN_BUSTER_NAME).qcow2: build/$(DEBIAN_BUSTER_BASE)
 	transient build -f $(DEBIAN_BUSTER_IMAGEFILE) build/ -local -name $(DEBIAN_BUSTER_NAME)
 
-.PHONY: debian-buster
+.PHONY: debian-buster test-debian-buster interactive-debian-buster
 debian-buster: build/$(DEBIAN_BUSTER_NAME).qcow2
+test-debian-buster: test-build/$(DEBIAN_BUSTER_NAME).qcow2
+interactive-debian-buster: interactive-build/$(DEBIAN_BUSTER_NAME).qcow2
+
 
 build/$(ALPINE_3_13_BASE): | build
 	curl -L $(ALPINE_3_13_URL) -o $@
@@ -60,8 +77,10 @@ build/$(ALPINE_3_13_BASE): | build
 build/$(ALPINE_3_13_NAME).qcow2: build/$(ALPINE_3_13_BASE)
 	transient -vvv build -f $(ALPINE_3_13_IMAGEFILE) build/ -local -name $(ALPINE_3_13_NAME)
 
-.PHONY: alpine-3.13
+.PHONY: alpine-3.13 test-alpine-3.13 interactive-alpine-3.13
 alpine-3.13: build/$(ALPINE_3_13_NAME).qcow2
+test-alpine-3.13: test-build/$(ALPINE_3_13_NAME).qcow2
+interactive-alpine-3.13: interactive-build/$(ALPINE_3_13_NAME).qcow2
 
 
 .PHONY: clean
