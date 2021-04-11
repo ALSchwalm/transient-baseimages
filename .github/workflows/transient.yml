@@ -10,6 +10,8 @@ jobs:
         target:
           - centos-7.8
           - ubuntu-20.04
+          - debian-buster
+          - alpine-3.13
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python 3.8
