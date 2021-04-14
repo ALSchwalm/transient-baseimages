@@ -1,0 +1,2 @@
+GRUB_CMDLINE_LINUX_DEFAULT="console=ttyS0 console=tty0"
+GRUB_TIMEOUT=1

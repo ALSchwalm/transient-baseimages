@@ -9,6 +9,11 @@ CENTOS_7_8_BASE=centos-7.8.2003.tar.xz
 CENTOS_7_8_IMAGEFILE=Imagefile.centos78
 CENTOS_7_8_NAME=centos-7.8.2003
 
+CENTOS_8_3_URL="https://github.com/CentOS/sig-cloud-instance-images/raw/ccd17799397027acf9ee6d660e75b8fce4c852e8/docker/centos-8-x86_64.tar.xz"
+CENTOS_8_3_BASE=centos-8.3.2011.tar.xz
+CENTOS_8_3_IMAGEFILE=Imagefile.centos83
+CENTOS_8_3_NAME=centos-8.3.2011
+
 DEBIAN_BUSTER_URL="https://github.com/debuerreotype/docker-debian-artifacts/blob/38b06b2a8a31d805359f1ca3ef5f3203b8a536a7/stable/rootfs.tar.xz?raw=true"
 DEBIAN_BUSTER_BASE=debian-buster.tar.xz
 DEBIAN_BUSTER_IMAGEFILE=Imagefile.debianBuster
@@ -19,7 +24,7 @@ ALPINE_3_13_BASE=alpine-3.13.tar.xz
 ALPINE_3_13_IMAGEFILE=Imagefile.alpine313
 ALPINE_3_13_NAME=alpine-3.13
 
-PLATFORMS := ubuntu-20.04 centos-7.8 debian-buster alpine-3.13
+PLATFORMS := ubuntu-20.04 centos-7.8 centos-8.3 debian-buster alpine-3.13
 
 all: $(PLATFORMS)
 test: $(addprefix test-,$(PLATFORMS))
@@ -57,6 +62,18 @@ build/$(CENTOS_7_8_NAME).qcow2: build/$(CENTOS_7_8_BASE)
 centos-7.8: build/$(CENTOS_7_8_NAME).qcow2
 test-centos-7.8: test-build/$(CENTOS_7_8_NAME).qcow2
 interactive-centos-7.8: interactive-build/$(CENTOS_7_8_NAME).qcow2
+
+
+build/$(CENTOS_8_3_BASE): | build
+	curl -L $(CENTOS_8_3_URL) -o $@
+
+build/$(CENTOS_8_3_NAME).qcow2: build/$(CENTOS_8_3_BASE)
+	transient build -f $(CENTOS_8_3_IMAGEFILE) build/ -local -name $(CENTOS_8_3_NAME)
+
+.PHONY: centos-8.3 test-centos-8.3 interactive-centos-8.3
+centos-8.3: build/$(CENTOS_8_3_NAME).qcow2
+test-centos-8.3: test-build/$(CENTOS_8_3_NAME).qcow2
+interactive-centos-8.3: interactive-build/$(CENTOS_8_3_NAME).qcow2
 
 
 build/$(DEBIAN_BUSTER_BASE): | build

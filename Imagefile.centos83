@@ -2,12 +2,13 @@ FROM scratch
 DISK 20gb MBR
 PARTITION 1 FORMAT xfs OPTIONS "-m crc=0" MOUNT /
 
-ADD centos-7.8.2003.tar.xz /
+ADD centos-8.3.2011.tar.xz /
 
-RUN yum install -y kernel grub2 systemd systemd-networkd sudo openssh-server \
-                   systemd-resolved
+RUN yum -y install epel-release
+RUN yum install -y kernel grub2 systemd sudo openssh-server \
+        systemd-networkd passwd
 
-RUN mkdir /etc/systemd/network
+RUN mkdir -p /etc/systemd/network
 RUN chmod 755 /etc/systemd/network
 ADD dhcp.network /etc/systemd/network/10-dhcp.network
 
@@ -17,15 +18,24 @@ RUN mkdir /home/vagrant/.ssh/
 ADD authorized_keys /home/vagrant/.ssh/authorized_keys
 RUN chown -R vagrant /home/vagrant/.ssh/
 RUN chmod 644 /home/vagrant/.ssh/authorized_keys
+
 RUN passwd -d root
 RUN sed -i 's/# %wheel/%wheel/' /etc/sudoers
 
 RUN systemctl disable network
-RUN systemctl enable systemd-networkd.service
+RUN systemctl enable systemd-networkd
 RUN systemctl enable systemd-resolved
 RUN systemctl enable sshd
+RUN systemctl enable serial-getty@ttyS0
+RUN systemctl enable getty@tty1
+RUN systemctl unmask getty.target
+RUN systemctl unmask systemd-logind
+RUN systemctl unmask systemd-remount-fs
+
+ADD dracut_83.conf /etc/dracut.conf.d/01-transient.conf
+RUN dracut --force --kver $(rpm -q kernel --queryformat "%{VERSION}-%{RELEASE}.%{ARCH}")
 
 ADD default_grub /etc/default/grub
-RUN echo "/dev/sda / xfs rw 0 0" >> /etc/fstab
+RUN echo "/dev/sda1 / xfs rw 0 0" >> /etc/fstab
 RUN grub2-install /dev/sda
 RUN grub2-mkconfig -o /boot/grub2/grub.cfg
