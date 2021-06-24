@@ -4,6 +4,8 @@ PARTITION 1 FORMAT xfs OPTIONS "-m crc=0" MOUNT /
 
 ADD centos-8.3.2011.tar.xz /
 
+RUN echo 'fastestmirror=1' >> /etc/dnf/dnf.conf
+
 RUN yum -y install epel-release
 RUN yum install -y kernel grub2 systemd sudo openssh-server \
         systemd-networkd passwd
