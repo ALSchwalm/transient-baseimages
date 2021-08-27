@@ -4,7 +4,9 @@ PARTITION 1 FORMAT ext4 OPTIONS "-O ^64bit" MOUNT / FLAGS BOOT
 
 ADD alpine-3.13.tar.xz /
 
-RUN apk add syslinux linux-virt sudo openrc openssh-server busybox-initscripts \
+RUN apk add syslinux linux-virt sudo openrc \
+            openssh-server openssh-client rsync \
+            busybox-initscripts \
             pm-utils util-linux
 
 RUN adduser -S vagrant -G wheel -s /bin/sh
