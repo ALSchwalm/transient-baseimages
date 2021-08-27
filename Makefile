@@ -47,7 +47,7 @@ build/$(UBUNTU_20_04_BASE): | build
 	curl -L $(UBUNTU_20_04_URL) -o $@
 
 build/$(UBUNTU_20_04_NAME).qcow2: build/$(UBUNTU_20_04_BASE)
-	transient build -f $(UBUNTU_20_04_IMAGEFILE) build/ -local -name $(UBUNTU_20_04_NAME)
+	transient image build -f $(UBUNTU_20_04_IMAGEFILE) build/ --local --name $(UBUNTU_20_04_NAME)
 
 .PHONY: ubuntu-20.04 test-ubuntu-20.04 interactive-ubuntu-20.04
 ubuntu-20.04: build/$(UBUNTU_20_04_NAME).qcow2.xz
@@ -59,7 +59,7 @@ build/$(CENTOS_7_8_BASE): | build
 	curl -L $(CENTOS_7_8_URL) -o $@
 
 build/$(CENTOS_7_8_NAME).qcow2: build/$(CENTOS_7_8_BASE)
-	transient build -f $(CENTOS_7_8_IMAGEFILE) build/ -local -name $(CENTOS_7_8_NAME)
+	transient image build -f $(CENTOS_7_8_IMAGEFILE) build/ --local --name $(CENTOS_7_8_NAME)
 
 .PHONY: centos-7.8 test-centos-7.8 interactive-centos-7.8
 centos-7.8: build/$(CENTOS_7_8_NAME).qcow2.xz
@@ -71,7 +71,7 @@ build/$(CENTOS_8_3_BASE): | build
 	curl -L $(CENTOS_8_3_URL) -o $@
 
 build/$(CENTOS_8_3_NAME).qcow2: build/$(CENTOS_8_3_BASE)
-	transient build -f $(CENTOS_8_3_IMAGEFILE) build/ -local -name $(CENTOS_8_3_NAME)
+	transient image build -f $(CENTOS_8_3_IMAGEFILE) build/ --local --name $(CENTOS_8_3_NAME)
 
 .PHONY: centos-8.3 test-centos-8.3 interactive-centos-8.3
 centos-8.3: build/$(CENTOS_8_3_NAME).qcow2.xz
@@ -83,7 +83,7 @@ build/$(DEBIAN_BUSTER_BASE): | build
 	curl -L $(DEBIAN_BUSTER_URL) -o $@
 
 build/$(DEBIAN_BUSTER_NAME).qcow2: build/$(DEBIAN_BUSTER_BASE)
-	transient build -f $(DEBIAN_BUSTER_IMAGEFILE) build/ -local -name $(DEBIAN_BUSTER_NAME)
+	transient image build -f $(DEBIAN_BUSTER_IMAGEFILE) build/ --local --name $(DEBIAN_BUSTER_NAME)
 
 .PHONY: debian-buster test-debian-buster interactive-debian-buster
 debian-buster: build/$(DEBIAN_BUSTER_NAME).qcow2.xz
@@ -95,7 +95,7 @@ build/$(ALPINE_3_13_BASE): | build
 	curl -L $(ALPINE_3_13_URL) -o $@
 
 build/$(ALPINE_3_13_NAME).qcow2: build/$(ALPINE_3_13_BASE)
-	transient build -f $(ALPINE_3_13_IMAGEFILE) build/ -local -name $(ALPINE_3_13_NAME)
+	transient image build -f $(ALPINE_3_13_IMAGEFILE) build/ --local --name $(ALPINE_3_13_NAME)
 
 .PHONY: alpine-3.13 test-alpine-3.13 interactive-alpine-3.13
 alpine-3.13: build/$(ALPINE_3_13_NAME).qcow2.xz
