@@ -4,6 +4,11 @@ PARTITION 1 FORMAT xfs MOUNT /
 
 ADD debian-buster.tar.xz /
 
+RUN > /etc/apt/sources.list; \
+    echo "deb http://deb.debian.org/debian buster main"                       >> /etc/apt/sources.list; \
+    echo "deb http://security.debian.org/debian-security buster/updates main" >> /etc/apt/sources.list; \
+    echo "deb http://deb.debian.org/debian buster-updates main"               >> /etc/apt/sources.list
+
 RUN apt-get update
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
        linux-image-amd64 grub2 init systemd \
