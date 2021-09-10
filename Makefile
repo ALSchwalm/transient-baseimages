@@ -14,7 +14,7 @@ CENTOS_8_3_BASE=centos-8.3.2011.tar.xz
 CENTOS_8_3_IMAGEFILE=Imagefile.centos83
 CENTOS_8_3_NAME=centos-8.3.2011
 
-DEBIAN_BUSTER_URL="https://github.com/debuerreotype/docker-debian-artifacts/blob/38b06b2a8a31d805359f1ca3ef5f3203b8a536a7/stable/rootfs.tar.xz?raw=true"
+DEBIAN_BUSTER_URL="https://github.com/debuerreotype/docker-debian-artifacts/blob/4367a1297d6b7193b88c133c653dd07005b3c632/buster/rootfs.tar.xz?raw=true"
 DEBIAN_BUSTER_BASE=debian-buster.tar.xz
 DEBIAN_BUSTER_IMAGEFILE=Imagefile.debianBuster
 DEBIAN_BUSTER_NAME=debian-buster
