@@ -25,8 +25,8 @@ fi
 
 automatic_test() {
     temp_backend=$(mktemp -d)
-    output=$(transient run -image-backend ${temp_backend} -image ${1},file=${1} -sshs \
-                       -ssh-command "echo ssh working" -- \
+    output=$(transient run --image-backend ${temp_backend} ${1},file=${1} --sshs \
+                       --ssh-command "echo ssh working" -- \
                        -m 1G -smp 2 -machine accel=kvm:tcg)
 
     if echo $output | grep -qv "Linux version"; then
@@ -40,8 +40,8 @@ automatic_test() {
 
 interactive_test() {
     temp_backend=$(mktemp -d)
-    transient run -image-backend ${temp_backend} -image ${1},file=${1} -sshs \
-                   -ssh-timeout 780 -shutdown-timeout 500 -- \
+    transient run --image-backend ${temp_backend} ${1},file=${1} --sshs \
+                   --ssh-timeout 780 --shutdown-timeout 500 -- \
                    -m 1G -smp 2 -machine accel=kvm:tcg
 }
 
