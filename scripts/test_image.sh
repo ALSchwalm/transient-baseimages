@@ -24,8 +24,8 @@ then
 fi
 
 automatic_test() {
-    temp_backend=$(mktemp -d)
-    output=$(transient run --image-backend ${temp_backend} ${1},file=${1} --sshs \
+    temp_backend=$(TMPDIR=$(pwd)/build mktemp -d)
+    output=$(transient run --name foo --image-backend ${temp_backend} ${1},file=${1} --sshs \
                        --ssh-command "echo ssh working" -- \
                        -m 1G -smp 2 -machine accel=kvm:tcg)
 
@@ -39,7 +39,7 @@ automatic_test() {
 }
 
 interactive_test() {
-    temp_backend=$(mktemp -d)
+    temp_backend=$(TMPDIR=$(pwd)/build mktemp -d)
     transient run --image-backend ${temp_backend} ${1},file=${1} --sshs \
                    --ssh-timeout 780 --shutdown-timeout 500 -- \
                    -m 1G -smp 2 -machine accel=kvm:tcg

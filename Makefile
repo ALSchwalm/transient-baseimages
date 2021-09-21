@@ -26,11 +26,14 @@ ALPINE_3_13_NAME=alpine-3.13
 
 PLATFORMS := ubuntu-20.04 centos-7.8 centos-8.3 debian-buster alpine-3.13
 
-all: $(PLATFORMS)
+all: $(PLATFORMS) raw-alpine-3.13
 test: $(addprefix test-,$(PLATFORMS))
 
-build/%.qcow2.xz : build/%.qcow2
+build/%.xz : build/%
 	xz -k $<
+
+build/%.raw : build/%.qcow2
+	qemu-img convert -O raw $< $@
 
 build:
 	mkdir -p build
@@ -97,11 +100,11 @@ build/$(ALPINE_3_13_BASE): | build
 build/$(ALPINE_3_13_NAME).qcow2: build/$(ALPINE_3_13_BASE)
 	transient image build -f $(ALPINE_3_13_IMAGEFILE) build/ --local --name $(ALPINE_3_13_NAME)
 
-.PHONY: alpine-3.13 test-alpine-3.13 interactive-alpine-3.13
+.PHONY: alpine-3.13 test-alpine-3.13 interactive-alpine-3.13 raw-alpine-3.13
 alpine-3.13: build/$(ALPINE_3_13_NAME).qcow2.xz
 test-alpine-3.13: test-build-$(ALPINE_3_13_NAME).qcow2.xz
 interactive-alpine-3.13: interactive-build-$(ALPINE_3_13_NAME).qcow2.xz
-
+raw-alpine-3.13: build/$(ALPINE_3_13_NAME).raw.xz
 
 .PHONY: clean
 clean:
